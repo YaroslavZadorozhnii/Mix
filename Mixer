@@ -1,0 +1,91 @@
+package com.gmail.docfordja;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class Mixer {
+/*Принимает два файла, записывает их в строки, преобразовывает строки в массивы,
+сравнивает слова в массивах, повторяющиеся записывает в строку, создает новый файл, передает строку*/
+	public void mixer(File one, File two) throws IOException {
+		File mix = new File(replaceLast(one.getAbsolutePath(), ".", "(new)"));
+		String oneString = "";
+		String twoString = "";
+		String mixString = "";
+		Scanner oneScanner = new Scanner(one);
+		for (; oneScanner.hasNextLine();) {
+			oneString += " " + oneScanner.nextLine();
+		}
+		Scanner twoScanner = new Scanner(two);
+		for (; twoScanner.hasNextLine();) {
+			twoString += " " + twoScanner.nextLine();
+		}
+		oneScanner.close();
+	  twoScanner.close();
+	    
+		String on = clear(oneString);
+		String tw = clear(twoString);
+
+		String[] oneArray = on.split(" ");
+		String[] twoArray = tw.split(" ");
+		
+		for (int i = 0; i < oneArray.length; i++) {
+			for (int j = 0; j < twoArray.length; j++) {
+					if (oneArray[i].equals(twoArray[j])) {
+						mixString += oneArray[i] + " ";
+					}
+				
+			}
+		}
+        note(mixString, mix);
+	}
+  // чистит текст от пунктуации и убирает лишние пробелы
+	public String clear(String string) {
+		String one = string.trim();
+		String two = one.replace('.', ' ');
+		one = two.replace('#', ' ');
+		two = one.replace('(', ' ');
+		one = two.replace(')', ' ');
+		two = one.replace(',', ' ');
+		one = two.replace('+', ' ');
+		two = one.replace('-', ' ');
+		one = two.replace(';', ' ');
+		two = one.replace(':', ' ');
+		one = two.replace('=', ' ');
+		two = one.replace('%', ' ');
+    one = two.replace('!', ' ');
+		two = one.replace('?', ' ');
+		one = two.replaceAll("  ", " ");
+		two = one.replaceAll("  ", " ");
+		one = two.replaceAll("  ", " ");
+
+		return one.toLowerCase();
+	}
+  //Отвечает за запись в файл
+	public void note(String string, File mix) throws IOException {
+		FileWriter fw = new FileWriter(mix);
+		fw.write(string);
+		System.out.println("Done!");
+		fw.close();
+	}
+	//Бездарный кавер на replaceFirst нужен для создания уникального имени файла по существующей директории
+	public String replaceLast(String string, String num, String exit) {
+		String result = "";
+		int index = -1;
+		int vol = 0;
+		for(int i = 0 ; i < string.length() ; i++) {
+			index = string.indexOf(num, index);
+			if(index > 0) {
+				vol = index;
+			}
+		}
+		String[] res = string.split("");
+		res[vol] = exit + num;
+		for(int i = 0 ; i < res.length ; i++) {
+			result += res[i];
+		}
+		return result;
+	}
+
+}
