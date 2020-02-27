@@ -1,0 +1,19 @@
+package com.gmail.docfordja;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+public class Main {
+	public static void main(String[] args) throws FileNotFoundException {
+		File one = new File("C:/Users/anton/Desktop/one.txt");
+		File two = new File("C:/Users/anton/Desktop/two.txt");
+		Mixer mx = new Mixer();
+		try {
+			mx.mixer(one, two);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
